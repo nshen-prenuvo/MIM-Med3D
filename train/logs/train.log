@@ -1,0 +1,117 @@
+/home/ubuntu/anaconda3/envs/pytorch_p38/lib/python3.8/site-packages/mmengine/optim/optimizer/zero_optimizer.py:11: DeprecationWarning: `TorchScript` support for functional optimizers is deprecated and will be removed in a future PyTorch release. Consider using the `torch.compile` optimizer instead.
+  from torch.distributed.optim import \
+/home/ubuntu/anaconda3/envs/pytorch_p38/lib/python3.8/site-packages/timm/models/layers/__init__.py:48: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+/home/ubuntu/anaconda3/envs/pytorch_p38/lib/python3.8/site-packages/kornia/feature/lightglue.py:44: FutureWarning: `torch.cuda.amp.custom_fwd(args...)` is deprecated. Please use `torch.amp.custom_fwd(args..., device_type='cuda')` instead.
+  @torch.cuda.amp.custom_fwd(cast_inputs=torch.float32)
+/home/ubuntu/fomo25_challenge/pipelines/pretrain_mim_med3d/MIM-Med3D/code/data/utils.py:115: FutureWarning: `torch.cuda.amp.custom_fwd(args...)` is deprecated. Please use `torch.amp.custom_fwd(args..., device_type='cuda')` instead.
+  @torch.cuda.amp.custom_fwd(cast_inputs=torch.float32)
+Seed set to 2002
+/home/ubuntu/anaconda3/envs/pytorch_p38/lib/python3.8/site-packages/monai/utils/deprecate_utils.py:221: FutureWarning: monai.networks.nets.vit ViT.__init__:pos_embed: Argument `pos_embed` has been deprecated since version 1.2. It will be removed in version 1.4. please use `proj_type` instead.
+  warn_deprecated(argname, msg, warning_category)
+/home/ubuntu/anaconda3/envs/pytorch_p38/lib/python3.8/site-packages/lightning/pytorch/cli.py:676: `SimMIMtrainer.configure_optimizers` will be overridden by `LightningCLI.configure_optimizers`.
+Using 16bit Automatic Mixed Precision (AMP)
+/home/ubuntu/anaconda3/envs/pytorch_p38/lib/python3.8/site-packages/lightning/pytorch/plugins/precision/amp.py:52: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+`Trainer(limit_train_batches=1.0)` was configured so 100% of the batches per epoch will be used..
+`Trainer(limit_val_batches=1.0)` was configured so 100% of the batches will be used..
+`Trainer(limit_test_batches=1.0)` was configured so 100% of the batches will be used..
+`Trainer(limit_predict_batches=1.0)` was configured so 100% of the batches will be used..
+Loading dataset:   0%|          | 0/200 [00:00<?, ?it/s]Loading dataset:  18%|█▊        | 35/200 [00:00<00:00, 334.82it/s]Loading dataset:  35%|███▌      | 70/200 [00:00<00:00, 340.11it/s]Loading dataset:  52%|█████▎    | 105/200 [00:00<00:00, 333.34it/s]Loading dataset:  70%|██████▉   | 139/200 [00:00<00:00, 330.94it/s]Loading dataset:  90%|█████████ | 180/200 [00:00<00:00, 354.19it/s]Loading dataset: 100%|██████████| 200/200 [00:00<00:00, 348.31it/s]
+Loading dataset:   0%|          | 0/200 [00:00<?, ?it/s]Loading dataset:  19%|█▉        | 38/200 [00:00<00:00, 349.42it/s]Loading dataset:  36%|███▋      | 73/200 [00:00<00:00, 151.58it/s]Loading dataset:  47%|████▋     | 94/200 [00:02<00:04, 25.22it/s] Loading dataset:  53%|█████▎    | 106/200 [00:04<00:06, 15.00it/s]Loading dataset:  57%|█████▋    | 114/200 [00:05<00:06, 12.61it/s]Loading dataset:  60%|█████▉    | 119/200 [00:06<00:07, 10.52it/s]Loading dataset:  62%|██████▏   | 123/200 [00:07<00:07, 10.90it/s]Loading dataset:  64%|██████▍   | 128/200 [00:07<00:06, 10.52it/s]Loading dataset:  66%|██████▌   | 131/200 [00:08<00:07,  9.34it/s]Loading dataset:  68%|██████▊   | 137/200 [00:08<00:05, 11.71it/s]Loading dataset:  70%|███████   | 140/200 [00:09<00:07,  8.25it/s]Loading dataset:  72%|███████▏  | 143/200 [00:09<00:06,  8.56it/s]Loading dataset:  74%|███████▎  | 147/200 [00:09<00:05,  9.98it/s]Loading dataset:  74%|███████▍  | 149/200 [00:11<00:09,  5.53it/s]Loading dataset:  76%|███████▌  | 152/200 [00:11<00:08,  5.46it/s]Loading dataset:  77%|███████▋  | 154/200 [00:11<00:07,  6.14it/s]Loading dataset:  78%|███████▊  | 157/200 [00:12<00:06,  6.67it/s]Loading dataset:  80%|███████▉  | 159/200 [00:12<00:08,  5.05it/s]Loading dataset:  80%|████████  | 161/200 [00:13<00:08,  4.63it/s]Loading dataset:  84%|████████▍ | 169/200 [00:13<00:03,  9.30it/s]Loading dataset:  86%|████████▌ | 171/200 [00:14<00:04,  7.16it/s]Loading dataset:  87%|████████▋ | 174/200 [00:14<00:02,  8.80it/s]Loading dataset:  88%|████████▊ | 176/200 [00:14<00:03,  7.97it/s]Loading dataset:  90%|████████▉ | 179/200 [00:14<00:02,  8.86it/s]Loading dataset:  90%|█████████ | 181/200 [00:15<00:03,  5.74it/s]Loading dataset:  92%|█████████▎| 185/200 [00:15<00:01,  8.51it/s]Loading dataset:  94%|█████████▍| 188/200 [00:16<00:02,  5.08it/s]Loading dataset:  98%|█████████▊| 195/200 [00:17<00:00,  7.88it/s]Loading dataset:  99%|█████████▉| 198/200 [00:17<00:00,  7.76it/s]Loading dataset: 100%|██████████| 200/200 [00:17<00:00, 11.26it/s]
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+
+  | Name       | Type      | Params | Mode 
+-------------------------------------------------
+0 | model      | ViTSimMIM | 109 M  | train
+1 | recon_loss | L1Loss    | 0      | train
+-------------------------------------------------
+109 M     Trainable params
+0         Non-trainable params
+109 M     Total params
+436.716   Total estimated model params size (MB)
+Sanity Checking: |          | 0/? [00:00<?, ?it/s]Sanity Checking:   0%|          | 0/2 [00:00<?, ?it/s]Sanity Checking DataLoader 0:   0%|          | 0/2 [00:00<?, ?it/s]recon_patches[masked_idx[0]]: tensor([-0.6284,  0.1851,  0.2817,  ..., -0.3613, -0.2001,  1.0088],
+       device='cuda:0')
+recon_patches[masked_idx[1]]: tensor([-0.5952,  0.2355,  0.2430,  ..., -0.3823, -0.1903,  0.9712],
+       device='cuda:0')
+Saved reconstruction visualization to: /home/ubuntu/fomo25_challenge/pipelines/pretrain_mim_med3d/lightning/logs/fomo60k/vitsimmim_base_p16_m0.3_full_shallow/reconstruction_visualizations/epoch_0_step_0.png
+Sanity Checking DataLoader 0:  50%|█████     | 1/2 [00:00<00:00,  1.27it/s]Sanity Checking DataLoader 0: 100%|██████████| 2/2 [00:00<00:00,  2.45it/s]                                                                           Training: |          | 0/? [00:00<?, ?it/s]Training:   0%|          | 0/1852 [00:00<?, ?it/s]Epoch 0:   0%|          | 0/1852 [00:00<?, ?it/s] Epoch 0:   0%|          | 1/1852 [00:21<10:54:21,  0.05it/s]Epoch 0:   0%|          | 1/1852 [00:21<10:54:22,  0.05it/s, v_num=llow]Epoch 0:   0%|          | 2/1852 [00:21<5:28:51,  0.09it/s, v_num=llow] Epoch 0:   0%|          | 2/1852 [00:21<5:28:52,  0.09it/s, v_num=llow]Epoch 0:   0%|          | 3/1852 [00:21<3:40:32,  0.14it/s, v_num=llow]Epoch 0:   0%|          | 3/1852 [00:21<3:40:32,  0.14it/s, v_num=llow]Epoch 0:   0%|          | 4/1852 [00:22<2:53:14,  0.18it/s, v_num=llow]Epoch 0:   0%|          | 4/1852 [00:22<2:53:15,  0.18it/s, v_num=llow]Epoch 0:   0%|          | 5/1852 [00:41<4:18:09,  0.12it/s, v_num=llow]Epoch 0:   0%|          | 5/1852 [00:41<4:18:09,  0.12it/s, v_num=llow]Epoch 0:   0%|          | 6/1852 [00:42<3:35:43,  0.14it/s, v_num=llow]Epoch 0:   0%|          | 6/1852 [00:42<3:35:44,  0.14it/s, v_num=llow]Epoch 0:   0%|          | 7/1852 [00:42<3:05:24,  0.17it/s, v_num=llow]Epoch 0:   0%|          | 7/1852 [00:42<3:05:24,  0.17it/s, v_num=llow]Epoch 0:   0%|          | 8/1852 [00:42<2:42:40,  0.19it/s, v_num=llow]Epoch 0:   0%|          | 8/1852 [00:42<2:42:40,  0.19it/s, v_num=llow]Epoch 0:   0%|          | 9/1852 [00:59<3:24:10,  0.15it/s, v_num=llow]Epoch 0:   0%|          | 9/1852 [00:59<3:24:10,  0.15it/s, v_num=llow]Epoch 0:   1%|          | 10/1852 [00:59<3:04:06,  0.17it/s, v_num=llow]Epoch 0:   1%|          | 10/1852 [00:59<3:04:06,  0.17it/s, v_num=llow]Epoch 0:   1%|          | 11/1852 [01:00<2:47:40,  0.18it/s, v_num=llow]Epoch 0:   1%|          | 11/1852 [01:00<2:47:40,  0.18it/s, v_num=llow]Epoch 0:   1%|          | 12/1852 [01:00<2:33:58,  0.20it/s, v_num=llow]Epoch 0:   1%|          | 12/1852 [01:00<2:33:58,  0.20it/s, v_num=llow]Epoch 0:   1%|          | 13/1852 [01:17<3:02:42,  0.17it/s, v_num=llow]Epoch 0:   1%|          | 13/1852 [01:17<3:02:42,  0.17it/s, v_num=llow]Epoch 0:   1%|          | 14/1852 [01:17<2:49:52,  0.18it/s, v_num=llow]Epoch 0:   1%|          | 14/1852 [01:17<2:49:52,  0.18it/s, v_num=llow]Epoch 0:   1%|          | 15/1852 [01:17<2:38:45,  0.19it/s, v_num=llow]Epoch 0:   1%|          | 15/1852 [01:17<2:38:45,  0.19it/s, v_num=llow]Epoch 0:   1%|          | 16/1852 [01:17<2:29:01,  0.21it/s, v_num=llow]Epoch 0:   1%|          | 16/1852 [01:17<2:29:01,  0.21it/s, v_num=llow]Epoch 0:   1%|          | 17/1852 [01:33<2:48:16,  0.18it/s, v_num=llow]Epoch 0:   1%|          | 17/1852 [01:33<2:48:16,  0.18it/s, v_num=llow]Epoch 0:   1%|          | 18/1852 [01:33<2:39:11,  0.19it/s, v_num=llow]Epoch 0:   1%|          | 18/1852 [01:33<2:39:11,  0.19it/s, v_num=llow]Epoch 0:   1%|          | 19/1852 [01:33<2:30:56,  0.20it/s, v_num=llow]Epoch 0:   1%|          | 19/1852 [01:33<2:30:56,  0.20it/s, v_num=llow]Epoch 0:   1%|          | 20/1852 [01:34<2:23:32,  0.21it/s, v_num=llow]Epoch 0:   1%|          | 20/1852 [01:34<2:23:32,  0.21it/s, v_num=llow]Epoch 0:   1%|          | 21/1852 [01:50<2:40:31,  0.19it/s, v_num=llow]Epoch 0:   1%|          | 21/1852 [01:50<2:40:31,  0.19it/s, v_num=llow]Epoch 0:   1%|          | 22/1852 [01:52<2:35:49,  0.20it/s, v_num=llow]Epoch 0:   1%|          | 22/1852 [01:52<2:35:49,  0.20it/s, v_num=llow]Epoch 0:   1%|          | 23/1852 [01:52<2:29:08,  0.20it/s, v_num=llow]Epoch 0:   1%|          | 23/1852 [01:52<2:29:08,  0.20it/s, v_num=llow]Epoch 0:   1%|▏         | 24/1852 [01:52<2:23:01,  0.21it/s, v_num=llow]Epoch 0:   1%|▏         | 24/1852 [01:52<2:23:01,  0.21it/s, v_num=llow]Epoch 0:   1%|▏         | 25/1852 [02:06<2:34:32,  0.20it/s, v_num=llow]Epoch 0:   1%|▏         | 25/1852 [02:06<2:34:32,  0.20it/s, v_num=llow]Epoch 0:   1%|▏         | 26/1852 [02:07<2:29:20,  0.20it/s, v_num=llow]Epoch 0:   1%|▏         | 26/1852 [02:07<2:29:20,  0.20it/s, v_num=llow]Epoch 0:   1%|▏         | 27/1852 [02:07<2:23:53,  0.21it/s, v_num=llow]Epoch 0:   1%|▏         | 27/1852 [02:07<2:23:53,  0.21it/s, v_num=llow]Epoch 0:   2%|▏         | 28/1852 [02:07<2:18:49,  0.22it/s, v_num=llow]Epoch 0:   2%|▏         | 28/1852 [02:07<2:18:49,  0.22it/s, v_num=llow]Epoch 0:   2%|▏         | 29/1852 [02:23<2:30:28,  0.20it/s, v_num=llow]Epoch 0:   2%|▏         | 29/1852 [02:23<2:30:28,  0.20it/s, v_num=llow]Epoch 0:   2%|▏         | 30/1852 [02:25<2:27:41,  0.21it/s, v_num=llow]Epoch 0:   2%|▏         | 30/1852 [02:25<2:27:41,  0.21it/s, v_num=llow]Epoch 0:   2%|▏         | 31/1852 [02:26<2:22:59,  0.21it/s, v_num=llow]Epoch 0:   2%|▏         | 31/1852 [02:26<2:22:59,  0.21it/s, v_num=llow]Epoch 0:   2%|▏         | 32/1852 [02:26<2:19:05,  0.22it/s, v_num=llow]Epoch 0:   2%|▏         | 32/1852 [02:26<2:19:05,  0.22it/s, v_num=llow]Epoch 0:   2%|▏         | 33/1852 [02:40<2:27:32,  0.21it/s, v_num=llow]Epoch 0:   2%|▏         | 33/1852 [02:40<2:27:32,  0.21it/s, v_num=llow]Epoch 0:   2%|▏         | 34/1852 [02:46<2:28:21,  0.20it/s, v_num=llow]Epoch 0:   2%|▏         | 34/1852 [02:46<2:28:21,  0.20it/s, v_num=llow]Epoch 0:   2%|▏         | 35/1852 [02:46<2:24:09,  0.21it/s, v_num=llow]Epoch 0:   2%|▏         | 35/1852 [02:46<2:24:09,  0.21it/s, v_num=llow]Epoch 0:   2%|▏         | 36/1852 [02:46<2:20:12,  0.22it/s, v_num=llow]Epoch 0:   2%|▏         | 36/1852 [02:46<2:20:12,  0.22it/s, v_num=llow]Epoch 0:   2%|▏         | 37/1852 [02:59<2:26:32,  0.21it/s, v_num=llow]Epoch 0:   2%|▏         | 37/1852 [02:59<2:26:32,  0.21it/s, v_num=llow]Epoch 0:   2%|▏         | 38/1852 [03:01<2:24:39,  0.21it/s, v_num=llow]Epoch 0:   2%|▏         | 38/1852 [03:01<2:24:40,  0.21it/s, v_num=llow]Epoch 0:   2%|▏         | 39/1852 [03:01<2:20:59,  0.21it/s, v_num=llow]Epoch 0:   2%|▏         | 39/1852 [03:01<2:20:59,  0.21it/s, v_num=llow]Epoch 0:   2%|▏         | 40/1852 [03:04<2:19:28,  0.22it/s, v_num=llow]Epoch 0:   2%|▏         | 40/1852 [03:04<2:19:28,  0.22it/s, v_num=llow]Epoch 0:   2%|▏         | 41/1852 [03:20<2:27:42,  0.20it/s, v_num=llow]Epoch 0:   2%|▏         | 41/1852 [03:20<2:27:42,  0.20it/s, v_num=llow]Epoch 0:   2%|▏         | 42/1852 [03:20<2:24:12,  0.21it/s, v_num=llow]Epoch 0:   2%|▏         | 42/1852 [03:20<2:24:12,  0.21it/s, v_num=llow]Epoch 0:   2%|▏         | 43/1852 [03:20<2:20:52,  0.21it/s, v_num=llow]Epoch 0:   2%|▏         | 43/1852 [03:20<2:20:52,  0.21it/s, v_num=llow]Epoch 0:   2%|▏         | 44/1852 [03:23<2:19:39,  0.22it/s, v_num=llow]Epoch 0:   2%|▏         | 44/1852 [03:23<2:19:39,  0.22it/s, v_num=llow]Epoch 0:   2%|▏         | 45/1852 [03:37<2:25:30,  0.21it/s, v_num=llow]Epoch 0:   2%|▏         | 45/1852 [03:37<2:25:30,  0.21it/s, v_num=llow]Epoch 0:   2%|▏         | 46/1852 [03:37<2:22:21,  0.21it/s, v_num=llow]Epoch 0:   2%|▏         | 46/1852 [03:37<2:22:21,  0.21it/s, v_num=llow]Epoch 0:   3%|▎         | 47/1852 [03:37<2:19:20,  0.22it/s, v_num=llow]Epoch 0:   3%|▎         | 47/1852 [03:37<2:19:20,  0.22it/s, v_num=llow]Epoch 0:   3%|▎         | 48/1852 [03:38<2:16:57,  0.22it/s, v_num=llow]Epoch 0:   3%|▎         | 48/1852 [03:38<2:16:57,  0.22it/s, v_num=llow]Epoch 0:   3%|▎         | 49/1852 [03:52<2:22:47,  0.21it/s, v_num=llow]Epoch 0:   3%|▎         | 49/1852 [03:52<2:22:47,  0.21it/s, v_num=llow]Epoch 0:   3%|▎         | 50/1852 [03:52<2:19:56,  0.21it/s, v_num=llow]Epoch 0:   3%|▎         | 50/1852 [03:52<2:19:56,  0.21it/s, v_num=llow]Epoch 0:   3%|▎         | 51/1852 [03:53<2:17:12,  0.22it/s, v_num=llow]Epoch 0:   3%|▎         | 51/1852 [03:53<2:17:12,  0.22it/s, v_num=llow]Epoch 0:   3%|▎         | 52/1852 [03:55<2:16:07,  0.22it/s, v_num=llow]Epoch 0:   3%|▎         | 52/1852 [03:55<2:16:07,  0.22it/s, v_num=llow]Epoch 0:   3%|▎         | 53/1852 [04:10<2:21:40,  0.21it/s, v_num=llow]Epoch 0:   3%|▎         | 53/1852 [04:10<2:21:40,  0.21it/s, v_num=llow]Epoch 0:   3%|▎         | 54/1852 [04:10<2:19:02,  0.22it/s, v_num=llow]Epoch 0:   3%|▎         | 54/1852 [04:10<2:19:02,  0.22it/s, v_num=llow]Epoch 0:   3%|▎         | 55/1852 [04:10<2:16:31,  0.22it/s, v_num=llow]Epoch 0:   3%|▎         | 55/1852 [04:10<2:16:31,  0.22it/s, v_num=llow]Epoch 0:   3%|▎         | 56/1852 [04:10<2:14:04,  0.22it/s, v_num=llow]Epoch 0:   3%|▎         | 56/1852 [04:10<2:14:04,  0.22it/s, v_num=llow][rank: 0] Received SIGTERM: 15
+Traceback (most recent call last):
+  File "/home/ubuntu/anaconda3/envs/pytorch_p38/lib/python3.8/site-packages/lightning/pytorch/trainer/call.py", line 44, in _call_and_handle_interrupt
+    return trainer_fn(*args, **kwargs)
+  File "/home/ubuntu/anaconda3/envs/pytorch_p38/lib/python3.8/site-packages/lightning/pytorch/trainer/trainer.py", line 579, in _fit_impl
+    self._run(model, ckpt_path=ckpt_path)
+  File "/home/ubuntu/anaconda3/envs/pytorch_p38/lib/python3.8/site-packages/lightning/pytorch/trainer/trainer.py", line 986, in _run
+    results = self._run_stage()
+  File "/home/ubuntu/anaconda3/envs/pytorch_p38/lib/python3.8/site-packages/lightning/pytorch/trainer/trainer.py", line 1030, in _run_stage
+    self.fit_loop.run()
+  File "/home/ubuntu/anaconda3/envs/pytorch_p38/lib/python3.8/site-packages/lightning/pytorch/loops/fit_loop.py", line 205, in run
+    self.advance()
+  File "/home/ubuntu/anaconda3/envs/pytorch_p38/lib/python3.8/site-packages/lightning/pytorch/loops/fit_loop.py", line 363, in advance
+    self.epoch_loop.run(self._data_fetcher)
+  File "/home/ubuntu/anaconda3/envs/pytorch_p38/lib/python3.8/site-packages/lightning/pytorch/loops/training_epoch_loop.py", line 140, in run
+    self.advance(data_fetcher)
+  File "/home/ubuntu/anaconda3/envs/pytorch_p38/lib/python3.8/site-packages/lightning/pytorch/loops/training_epoch_loop.py", line 212, in advance
+    batch, _, __ = next(data_fetcher)
+  File "/home/ubuntu/anaconda3/envs/pytorch_p38/lib/python3.8/site-packages/lightning/pytorch/loops/fetchers.py", line 133, in __next__
+    batch = super().__next__()
+  File "/home/ubuntu/anaconda3/envs/pytorch_p38/lib/python3.8/site-packages/lightning/pytorch/loops/fetchers.py", line 60, in __next__
+    batch = next(self.iterator)
+  File "/home/ubuntu/anaconda3/envs/pytorch_p38/lib/python3.8/site-packages/lightning/pytorch/utilities/combined_loader.py", line 341, in __next__
+    out = next(self._iterator)
+  File "/home/ubuntu/anaconda3/envs/pytorch_p38/lib/python3.8/site-packages/lightning/pytorch/utilities/combined_loader.py", line 78, in __next__
+    out[i] = next(self.iterators[i])
+  File "/home/ubuntu/anaconda3/envs/pytorch_p38/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 630, in __next__
+    data = self._next_data()
+  File "/home/ubuntu/anaconda3/envs/pytorch_p38/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1327, in _next_data
+    idx, data = self._get_data()
+  File "/home/ubuntu/anaconda3/envs/pytorch_p38/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1283, in _get_data
+    success, data = self._try_get_data()
+  File "/home/ubuntu/anaconda3/envs/pytorch_p38/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1131, in _try_get_data
+    data = self._data_queue.get(timeout=timeout)
+  File "/home/ubuntu/anaconda3/envs/pytorch_p38/lib/python3.8/queue.py", line 179, in get
+    self.not_empty.wait(remaining)
+  File "/home/ubuntu/anaconda3/envs/pytorch_p38/lib/python3.8/threading.py", line 306, in wait
+    gotit = waiter.acquire(True, timeout)
+  File "/home/ubuntu/anaconda3/envs/pytorch_p38/lib/python3.8/site-packages/torch/utils/data/_utils/signal_handling.py", line 67, in handler
+    _error_if_any_worker_fails()
+RuntimeError: DataLoader worker (pid 30501) is killed by signal: Terminated. 
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "experiments/ssl/simmim_pretrain_main.py", line 247, in <module>
+    cli = LightningCLI(save_config_kwargs={"overwrite": True})
+  File "/home/ubuntu/anaconda3/envs/pytorch_p38/lib/python3.8/site-packages/lightning/pytorch/cli.py", line 394, in __init__
+    self._run_subcommand(self.subcommand)
+  File "/home/ubuntu/anaconda3/envs/pytorch_p38/lib/python3.8/site-packages/lightning/pytorch/cli.py", line 701, in _run_subcommand
+    fn(**fn_kwargs)
+  File "/home/ubuntu/anaconda3/envs/pytorch_p38/lib/python3.8/site-packages/lightning/pytorch/trainer/trainer.py", line 543, in fit
+    call._call_and_handle_interrupt(
+  File "/home/ubuntu/anaconda3/envs/pytorch_p38/lib/python3.8/site-packages/lightning/pytorch/trainer/call.py", line 60, in _call_and_handle_interrupt
+    trainer._teardown()
+  File "/home/ubuntu/anaconda3/envs/pytorch_p38/lib/python3.8/site-packages/lightning/pytorch/trainer/trainer.py", line 1009, in _teardown
+    self.strategy.teardown()
+  File "/home/ubuntu/anaconda3/envs/pytorch_p38/lib/python3.8/site-packages/lightning/pytorch/strategies/strategy.py", line 531, in teardown
+    _optimizers_to_device(self.optimizers, torch.device("cpu"))
+  File "/home/ubuntu/anaconda3/envs/pytorch_p38/lib/python3.8/site-packages/lightning/fabric/utilities/optimizer.py", line 28, in _optimizers_to_device
+    _optimizer_to_device(opt, device)
+  File "/home/ubuntu/anaconda3/envs/pytorch_p38/lib/python3.8/site-packages/lightning/fabric/utilities/optimizer.py", line 34, in _optimizer_to_device
+    optimizer.state[p] = apply_to_collection(v, Tensor, move_data_to_device, device, allow_frozen=True)
+  File "/home/ubuntu/anaconda3/envs/pytorch_p38/lib/python3.8/site-packages/lightning_utilities/core/apply_func.py", line 52, in apply_to_collection
+    return _apply_to_collection_slow(
+  File "/home/ubuntu/anaconda3/envs/pytorch_p38/lib/python3.8/site-packages/lightning_utilities/core/apply_func.py", line 104, in _apply_to_collection_slow
+    v = _apply_to_collection_slow(
+  File "/home/ubuntu/anaconda3/envs/pytorch_p38/lib/python3.8/site-packages/lightning_utilities/core/apply_func.py", line 96, in _apply_to_collection_slow
+    return function(data, *args, **kwargs)
+  File "/home/ubuntu/anaconda3/envs/pytorch_p38/lib/python3.8/site-packages/lightning/fabric/utilities/apply_func.py", line 103, in move_data_to_device
+    return apply_to_collection(batch, dtype=_TransferableDataType, function=batch_to)
+  File "/home/ubuntu/anaconda3/envs/pytorch_p38/lib/python3.8/site-packages/lightning_utilities/core/apply_func.py", line 64, in apply_to_collection
+    return function(data, *args, **kwargs)
+  File "/home/ubuntu/anaconda3/envs/pytorch_p38/lib/python3.8/site-packages/lightning/fabric/utilities/apply_func.py", line 97, in batch_to
+    data_output = data.to(device, **kwargs)
+  File "/home/ubuntu/anaconda3/envs/pytorch_p38/lib/python3.8/site-packages/torch/utils/data/_utils/signal_handling.py", line 67, in handler
+    _error_if_any_worker_fails()
+RuntimeError: DataLoader worker (pid 30563) is killed by signal: Terminated. 
