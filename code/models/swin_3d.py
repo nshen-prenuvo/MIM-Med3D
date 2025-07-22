@@ -10,9 +10,9 @@ import torch.utils.checkpoint as checkpoint
 import numpy as np
 from timm.models.layers import DropPath, trunc_normal_
 
-from mmcv.runner import load_checkpoint
+# from mmcv.runner import load_checkpoint
+from mmengine.runner import load_checkpoint
 from mmcv.utils import get_logger
-
 
 def get_root_logger(log_file=None, log_level=logging.INFO):
     """Use ``get_logger`` method in mmcv to get the root logger.

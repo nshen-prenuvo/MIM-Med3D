@@ -1,0 +1,95 @@
+seed_everything: 2002  # Random seed for reproducibility across all random operations
+trainer:
+  logger:
+    class_path: lightning.pytorch.loggers.TensorBoardLogger  # TensorBoard logging for experiment tracking
+    init_args:
+      save_dir: /home/ubuntu/fomo25_challenge/pipelines/pretrain_mim_med3d/lightning/logs/  # Directory for log files
+      name: fomo60k  # Experiment name
+      version: vitsimmim_base_p16_m0.25  # Experiment version identifier
+      default_hp_metric: false  # Disable default hyperparameter metric
+  enable_checkpointing: true  # Enable automatic checkpointing during training
+  callbacks:
+      - class_path: lightning.pytorch.callbacks.ModelCheckpoint  # Model checkpoint callback
+        init_args:
+          dirpath: /home/ubuntu/fomo25_challenge/pipelines/pretrain_mim_med3d/lightning/checkpoints/  # Checkpoint directory
+          filename: vitsimmim_base_p16_fomo60k_epoch{epoch:02d}_step{global_step:04d}_val_loss{val/l1_loss:.5f}  # Checkpoint filename pattern
+          monitor: val/l1_loss  # Metric to monitor for best model
+          mode: min  # Minimize the monitored metric
+          save_weights_only: true  # Save only model weights, not optimizer state
+          auto_insert_metric_name: false  # Don't auto-insert metric name in filename
+      - class_path: lightning.pytorch.callbacks.LearningRateMonitor  # Learning rate monitoring callback
+        init_args:
+          logging_interval: step  # Log LR changes every step
+      - class_path: lightning.pytorch.callbacks.TQDMProgressBar  # Progress bar callback
+  default_root_dir: /home/ubuntu/fomo25_challenge/pipelines/pretrain_mim_med3d/lightning/results/  # Root directory for all outputs
+  gradient_clip_val: null  # Gradient clipping value (disabled)
+  gradient_clip_algorithm: null  # Gradient clipping algorithm (disabled)
+  num_nodes: 1  # Number of nodes for distributed training
+  devices: 1  # Number of GPUs per node
+  accelerator: cuda  # Use CUDA accelerator
+  enable_progress_bar: true  # Enable progress bar display
+  overfit_batches: 0.0  # Overfitting detection (disabled)
+  fast_dev_run: false  # Fast development run (disabled)
+  accumulate_grad_batches: 1  # Gradient accumulation steps
+  max_epochs: 50  # Maximum number of training epochs
+  min_epochs: null  # Minimum number of training epochs (no limit)
+  max_steps: -1  # Maximum number of training steps (no limit)
+  min_steps: null  # Minimum number of training steps (no limit)
+  max_time: null  # Maximum training time (no limit)
+  limit_train_batches: 1.0  # Use all training data (1.0 = 100%)
+  limit_val_batches: 1.0  # Use all validation data (1.0 = 100%)
+  limit_test_batches: 1.0  # Use all test data (1.0 = 100%)
+  limit_predict_batches: 1.0  # Use all prediction data (1.0 = 100%)
+  check_val_every_n_epoch: 1  # Run validation every epoch
+  val_check_interval: 1.0  # Validation check interval
+  log_every_n_steps: 5  # Log metrics every 5 steps
+  strategy: auto  # Distributed training strategy (auto-detect)
+  sync_batchnorm: false  # Don't synchronize batch normalization across GPUs
+  precision: 16-mixed  # Use mixed precision training (16-bit)
+  enable_model_summary: true  # Display model summary at start
+  num_sanity_val_steps: 2  # Run 2 validation steps before training
+  profiler: null  # Profiler for performance analysis (disabled)
+  benchmark: true  # Enable cuDNN benchmarking for faster training
+  deterministic: false  # Deterministic training (disabled for performance)
+  reload_dataloaders_every_n_epochs: 0  # Don't reload dataloaders
+  detect_anomaly: false  # Detect training anomalies (disabled)
+  plugins: null  # No additional plugins
+model:
+  class_path: __main__.SimMIMtrainer  # Custom SimMIM trainer class
+  init_args:
+    model_name: vitsimmim_base  # Model architecture name
+    model_dict:
+      pretrained: null  # Path to pretrained weights (null = train from scratch)
+      in_channels: 1  # Number of input channels (1 for grayscale medical images)
+      img_size: [96, 96, 16]  # Input image dimensions [depth, height, width]
+      patch_size: [16, 16, 16]  # Patch size for patch embedding [depth, height, width]
+      hidden_size: 768  # Hidden dimension size for transformer layers
+      mlp_dim: 3072  # MLP dimension in transformer blocks (4x hidden_size)
+      num_layers: 12  # Number of transformer layers
+      num_heads: 12  # Number of attention heads in transformer blocks
+      pos_embed: perceptron  # Position embedding type (learned positional embeddings)
+      dropout_rate: 0.0  # Dropout rate for regularization
+      spatial_dims: 3  # Spatial dimensions (3 for 3D data)
+      masking_ratio: 0.25  # Masking ratio for masked image modeling
+      revise_keys: []  # Keys to revise when loading pretrained weights
+    # visualization_frequency: 100  # Frequency of reconstruction visualization during training (unit: batch)
+data:
+  class_path: data.fomo60k_dataset.Fomo60kDataset  # FOMO-60K dataset class
+  init_args:
+    train_json_path: /home/ubuntu/fomo25_challenge/data/metadata/preprocessed/fomo-60k_subset/train_file_list.json  # Training data file list path
+    val_json_path: /home/ubuntu/fomo25_challenge/data/metadata/preprocessed/fomo-60k_subset/val_file_list.json  # Validation data file list path
+    cache_dir: /home/ubuntu/fomo25_challenge/data/cache/  # Directory for caching data
+    batch_size: 24   # Training batch size
+    val_batch_size: 16  # Validation batch size
+    num_workers: 4  # Number of data loading workers
+    cache_num: 200  # Number of samples to cache in memory
+    cache_rate: 1.0  # Fraction of dataset to cache (1.0 = cache all)
+    spatial_size: [96, 96, 16]  # Spatial size for random cropping [depth, height, width]
+    num_samples: 4  # Number of random crop samples per input
+    dist: true  # Enable distributed data loading
+optimizer:
+  class_path: torch.optim.AdamW  # AdamW optimizer with weight decay
+  init_args:
+    lr: 0.0003  # Learning rate
+    weight_decay: 0.00001  # Weight decay for regularization
+ckpt_path: null  # Checkpoint path for resuming training (null = start from scratch)

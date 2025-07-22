@@ -112,7 +112,7 @@ class DataAugmentation(torch.nn.Module):
         self.image_affine = K.RandomAffine3D(resample="BILINEAR", **affine_args)
         self.mask_affine = K.RandomAffine3D(resample="NEAREST", **affine_args)
 
-    @torch.cuda.amp.custom_fwd(cast_inputs=torch.float32)
+    @torch.amp.custom_fwd(cast_inputs=torch.float32, device_type='cuda')
     @torch.no_grad()
     def forward(self, img: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
         for flip_index in range(3):

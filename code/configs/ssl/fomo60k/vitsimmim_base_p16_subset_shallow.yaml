@@ -1,0 +1,137 @@
+seed_everything: 2002  # Random seed for reproducibility across all random operations
+trainer:
+  logger:
+    class_path: lightning.pytorch.loggers.TensorBoardLogger  # TensorBoard logging for experiment tracking
+    init_args:
+      save_dir: /home/ubuntu/fomo25_challenge/pipelines/pretrain_mim_med3d/lightning/logs/  # Directory for log files
+      name: fomo60k  # Experiment name
+      version: vitsimmim_base_p16_m0.3_subset_shallow_5cycle  # Experiment version identifier
+      default_hp_metric: false  # Disable default hyperparameter metric
+  enable_checkpointing: true  # Enable automatic checkpointing during training
+  callbacks:
+      - class_path: lightning.pytorch.callbacks.ModelCheckpoint  # Model checkpoint callback
+        init_args:
+          dirpath: /home/ubuntu/fomo25_challenge/pipelines/pretrain_mim_med3d/lightning/checkpoints/vitsimmim_base_p16_m0.3_subset_shallow_5cycle  # Checkpoint directory
+          filename: epoch{epoch:02d}_step{global_step:04d}_val_loss{val/l1_loss:.5f}  # Checkpoint filename pattern
+          monitor: val/l1_loss  # Metric to monitor for best model
+          mode: min  # Minimize the monitored metric
+          save_weights_only: true  # Save only model weights, not optimizer state
+          auto_insert_metric_name: false  # Don't auto-insert metric name in filename
+      - class_path: lightning.pytorch.callbacks.LearningRateMonitor  # Learning rate monitoring callback
+        init_args:
+          logging_interval: step  # Log LR changes every step
+      - class_path: lightning.pytorch.callbacks.TQDMProgressBar  # Progress bar callback
+  default_root_dir: /home/ubuntu/fomo25_challenge/pipelines/pretrain_mim_med3d/lightning/results/vitsimmim_base_p16_m0.3_subset_shallow_5cycle  # Root directory for all outputs
+  gradient_clip_val: 1.0  # Conservative clipping value
+  gradient_clip_algorithm: norm  # Norm-based clipping is more stable
+  num_nodes: 1  # Number of nodes for distributed training
+  devices: 1  # Number of GPUs per node
+  accelerator: cuda  # Use CUDA accelerator
+  enable_progress_bar: true  # Enable progress bar display
+  overfit_batches: 0.0  # Overfitting detection (disabled)
+  fast_dev_run: false  # Fast development run (disabled)
+  accumulate_grad_batches: 1  # Gradient accumulation steps
+  max_epochs: 120  # Maximum number of training epochs
+  min_epochs: null  # Minimum number of training epochs (no limit)
+  max_steps: -1  # Maximum number of training steps (no limit)
+  min_steps: null  # Minimum number of training steps (no limit)
+  max_time: null  # Maximum training time (no limit)
+  limit_train_batches: 1.0  # Use all training data (1.0 = 100%)
+  limit_val_batches: 1.0  # Use all validation data (1.0 = 100%)
+  limit_test_batches: 1.0  # Use all test data (1.0 = 100%)
+  limit_predict_batches: 1.0  # Use all prediction data (1.0 = 100%)
+  check_val_every_n_epoch: 1  # Run validation every epoch
+  val_check_interval: 0.1  # Validation check interval
+  log_every_n_steps: 5  # Log metrics every 5 steps
+  strategy: auto  # Distributed training strategy (auto-detect)
+  sync_batchnorm: false  # Don't synchronize batch normalization across GPUs
+  precision: 16-mixed  # Use mixed precision training (16-bit)
+  enable_model_summary: true  # Display model summary at start
+  num_sanity_val_steps: 2  # Run 2 validation steps before training
+  profiler: null  # Profiler for performance analysis (disabled)
+  benchmark: true  # Enable cuDNN benchmarking for faster training
+  deterministic: false  # Deterministic training (disabled for performance)
+  reload_dataloaders_every_n_epochs: 0  # Don't reload dataloaders
+  detect_anomaly: false  # Detect training anomalies (disabled)
+  plugins: null  # No additional plugins
+model:
+  class_path: __main__.SimMIMtrainer  # Custom SimMIM trainer class
+  init_args:
+    model_name: vitsimmim_base  # Model architecture name
+    model_dict:
+      pretrained: null  # Path to pretrained weights (null = train from scratch)
+      in_channels: 1  # Number of input channels (1 for grayscale medical images)
+      img_size: [96, 96, 16]  # Input image dimensions [depth, height, width]
+      patch_size: [16, 16, 16]  # Patch size for patch embedding [depth, height, width]
+      hidden_size: 1024  # Hidden dimension size for transformer layers
+      mlp_dim: 4096  # MLP dimension in transformer blocks (4x hidden_size)
+      num_layers: 8  # Number of transformer layers
+      num_heads: 16  # Number of attention heads in transformer blocks
+      pos_embed: perceptron  # Position embedding type (learned positional embeddings)
+      dropout_rate: 0.0  # Dropout rate for regularization
+      spatial_dims: 3  # Spatial dimensions (3 for 3D data)
+      masking_ratio: 0.3  # Masking ratio for masked image modeling
+      revise_keys: []  # Keys to revise when loading pretrained weights
+    # visualization_frequency: 100  # Frequency of reconstruction visualization during training (unit: batch)
+    optimizer_config:
+      class_path: torch.optim.AdamW  # AdamW optimizer with weight decay
+      # Alternative optimizers you can use:
+      # class_path: torch.optim.Adam
+      # class_path: torch.optim.SGD
+      # class_path: torch.optim.RMSprop
+      init_args:
+        lr: 0.00003  # Learning rate 
+        weight_decay: 0.00001  # Weight decay for regularization
+        # Additional optimizer-specific parameters:
+        # betas: [0.9, 0.999]  # For Adam/AdamW
+        # momentum: 0.9  # For SGD
+        # eps: 1e-8  # For Adam/AdamW
+    scheduler_config:
+      class_path: optimizers.lr_scheduler.WarmupCosineSchedule
+      # Alternative schedulers you can use:
+      # class_path: torch.optim.lr_scheduler.CosineAnnealingLR
+      # class_path: torch.optim.lr_scheduler.StepLR
+      # class_path: torch.optim.lr_scheduler.ReduceLROnPlateau
+      # class_path: optimizers.lr_scheduler.LinearWarmupCosineAnnealingLR
+      init_args:
+        warmup_steps: 463  # Increased warmup steps (doubled from 926 for more gradual warmup)
+        t_total: 4630
+        cycles: 5
+        # Additional scheduler-specific parameters:
+        # T_max: 100  # For CosineAnnealingLR
+        # step_size: 30  # For StepLR
+        # factor: 0.1  # For ReduceLROnPlateau
+        # patience: 10  # For ReduceLROnPlateau
+data:
+  class_path: data.fomo60k_dataset.Fomo60kDataset  # FOMO-60K dataset class
+  init_args:
+    train_json_path: /home/ubuntu/fomo25_challenge/data/metadata/preprocessed/fomo-60k_subset/train_file_list.json  # Training data file list path
+    val_json_path: /home/ubuntu/fomo25_challenge/data/metadata/preprocessed/fomo-60k_subset/val_file_list.json  # Validation data file list path
+    cache_dir: /home/ubuntu/fomo25_challenge/data/cache/  # Directory for caching data
+    batch_size: 32   # Training batch size
+    val_batch_size: 24  # Validation batch size
+    num_workers: 4  # Number of data loading workers
+    cache_num: 200  # Number of samples to cache in memory
+    cache_rate: 1.0  # Fraction of dataset to cache (1.0 = cache all)
+    spatial_size: [96, 96, 16]  # Spatial size for random cropping [depth, height, width]
+    num_samples: 4  # Number of random crop samples per input
+    dist: true  # Enable distributed data loading
+# optimizer:
+#   class_path: torch.optim.AdamW  # AdamW optimizer with weight decay
+#   init_args:
+#     lr: 0.0005  # Learning rate
+#     weight_decay: 0.00001  # Weight decay for regularization
+# lr_scheduler:
+#   class_path: optimizers.lr_scheduler.LinearWarmupCosineAnnealingLR
+#   init_args:
+#     warmup_start_lr: 0.00001
+#     warmup_epochs: 1  # Warmup for * epoch 
+#     max_epochs: 5  # Total training epochs
+#     eta_min: 0.00001  # Minimum learning rate
+# lr_scheduler:
+#   class_path: optimizers.lr_scheduler.WarmupCosineSchedule
+#   init_args:
+#     warmup_steps: 926
+#     t_total: 9260
+#     cycles: 0.5
+# ckpt_path: null  # Checkpoint path for resuming training (null = start from scratch)

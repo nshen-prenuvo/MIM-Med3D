@@ -6,7 +6,7 @@ from torch.optim.lr_scheduler import LambdaLR, _LRScheduler
 from torch import nn as nn
 from torch.optim import Adam, Optimizer
 from torch.optim.lr_scheduler import _LRScheduler
-from pytorch_lightning.utilities.cli import LR_SCHEDULER_REGISTRY
+# from pytorch_lightning.utilities.cli import LR_SCHEDULER_REGISTRY
 
 
 __all__ = ["LinearLR", "ExponentialLR"]
@@ -56,7 +56,7 @@ __all__ = ["LinearLR", "ExponentialLR"]
 #         return [base_lr * (self.end_lr / base_lr) ** r for base_lr in self.base_lrs]
 
 
-@LR_SCHEDULER_REGISTRY
+# @LR_SCHEDULER_REGISTRY 
 class WarmupCosineSchedule(LambdaLR):
     """Linear warmup and then cosine decay.
     Based on https://huggingface.co/ implementation.
@@ -98,7 +98,7 @@ class WarmupCosineSchedule(LambdaLR):
         )
 
 
-@LR_SCHEDULER_REGISTRY
+# @LR_SCHEDULER_REGISTRY
 class LinearWarmupCosineAnnealingLR(_LRScheduler):
     def __init__(
         self,
