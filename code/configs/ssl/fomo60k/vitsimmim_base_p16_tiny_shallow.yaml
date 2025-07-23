@@ -5,13 +5,13 @@ trainer:
     init_args:
       save_dir: /home/ubuntu/fomo25_challenge/pipelines/pretrain_mim_med3d/lightning/logs/  # Directory for log files
       name: fomo60k  # Experiment name
-      version: vitsimmim_base_p16_m0.3_tiny_shallow_5cycle  # Experiment version identifier
+      version: vitsimmim_base_p16_m0.3_tiny_shallow  # Experiment version identifier
       default_hp_metric: false  # Disable default hyperparameter metric
   enable_checkpointing: true  # Enable automatic checkpointing during training
   callbacks:
       - class_path: lightning.pytorch.callbacks.ModelCheckpoint  # Model checkpoint callback
         init_args:
-          dirpath: /home/ubuntu/fomo25_challenge/pipelines/pretrain_mim_med3d/lightning/checkpoints/vitsimmim_base_p16_m0.3_tiny_shallow_5cycle  # Checkpoint directory
+          dirpath: /home/ubuntu/fomo25_challenge/pipelines/pretrain_mim_med3d/lightning/checkpoints/vitsimmim_base_p16_m0.3_tiny_shallow  # Checkpoint directory
           filename: epoch{epoch:02d}_step{global_step:04d}_val_loss{val/l1_loss:.5f}  # Checkpoint filename pattern
           monitor: val/l1_loss  # Metric to monitor for best model  
           mode: min  # Minimize the monitored metric
@@ -21,7 +21,7 @@ trainer:
         init_args:
           logging_interval: step  # Log LR changes every step
       - class_path: lightning.pytorch.callbacks.TQDMProgressBar  # Progress bar callback
-  default_root_dir: /home/ubuntu/fomo25_challenge/pipelines/pretrain_mim_med3d/lightning/results/vitsimmim_base_p16_m0.3_tiny_shallow_5cycle  # Root directory for all outputs
+  default_root_dir: /home/ubuntu/fomo25_challenge/pipelines/pretrain_mim_med3d/lightning/results/vitsimmim_base_p16_m0.3_tiny_shallow  # Root directory for all outputs
   gradient_clip_val: 1.0  # Conservative clipping value
   gradient_clip_algorithm: norm  # Norm-based clipping is more stable
   num_nodes: 1  # Number of nodes for distributed training

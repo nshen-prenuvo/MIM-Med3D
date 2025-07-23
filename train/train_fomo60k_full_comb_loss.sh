@@ -20,11 +20,11 @@ nohup bash -c '{
     # echo "Listing current directory:"
     # ls -la
 
-    MAIN_FILE=experiments/ssl/simmim_pretrain_main.py
-    CONFIG_FILE=configs/ssl/fomo60k/vitsimmim_base_p16_tiny_shallow.yaml
+    MAIN_FILE=experiments/ssl/simmim_pretrain_main_comb_loss.py
+    CONFIG_FILE=configs/ssl/fomo60k/vitsimmim_base_p32_full_shallow_comb_loss.yaml
 
     python3 $MAIN_FILE fit --config $CONFIG_FILE
 
     conda deactivate
-}' > logs/train_fomo60k_tiny.log 2>&1 &
+}' > logs/train_fomo60k_full_comb_loss.log 2>&1 &
 # > logs/train_$(date +%Y%m%d_%H%M%S).log 2>&1 &

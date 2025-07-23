@@ -5,13 +5,13 @@ trainer:
     init_args:
       save_dir: /home/ubuntu/fomo25_challenge/pipelines/pretrain_mim_med3d/lightning/logs/  # Directory for log files
       name: fomo60k  # Experiment name
-      version: vitsimmim_base_p16_m0.5_full_shallow_0.5cycle  # Experiment version identifier
+      version: vitsimmim_base_p32_m0.5_full_shallow_2cycle  # Experiment version identifier
       default_hp_metric: false  # Disable default hyperparameter metric
   enable_checkpointing: true  # Enable automatic checkpointing during training
   callbacks:
       - class_path: lightning.pytorch.callbacks.ModelCheckpoint  # Model checkpoint callback
         init_args:
-          dirpath: /home/ubuntu/fomo25_challenge/pipelines/pretrain_mim_med3d/lightning/checkpoints/vitsimmim_base_p16_m0.5_full_shallow_0.5cycle  # Checkpoint directory
+          dirpath: /home/ubuntu/fomo25_challenge/pipelines/pretrain_mim_med3d/lightning/checkpoints/vitsimmim_base_p32_m0.5_full_shallow_2cycle  # Checkpoint directory
           filename: epoch{epoch:02d}_step{global_step:04d}_val_loss{val/l1_loss:.5f}  # Checkpoint filename pattern
           monitor: val/l1_loss  # Metric to monitor for best model
           mode: min  # Minimize the monitored metric
@@ -21,8 +21,8 @@ trainer:
         init_args:
           logging_interval: step  # Log LR changes every step
       - class_path: lightning.pytorch.callbacks.TQDMProgressBar  # Progress bar callback
-  default_root_dir: /home/ubuntu/fomo25_challenge/pipelines/pretrain_mim_med3d/lightning/results/vitsimmim_base_p16_m0.5_full_shallow_0.5cycle  # Root directory for all outputs
-  gradient_clip_val: 1.0  # Conservative clipping value
+  default_root_dir: /home/ubuntu/fomo25_challenge/pipelines/pretrain_mim_med3d/lightning/results/vitsimmim_base_p32_m0.5_full_shallow_2cycle  # Root directory for all outputs
+  gradient_clip_val: 1  # Conservative clipping value
   gradient_clip_algorithm: norm  # Norm-based clipping is more stable
   num_nodes: 1  # Number of nodes for distributed training
   devices: 1  # Number of GPUs per node
@@ -41,11 +41,11 @@ trainer:
   limit_test_batches: 1.0  # Use all test data (1.0 = 100%)
   limit_predict_batches: 1.0  # Use all prediction data (1.0 = 100%)
   check_val_every_n_epoch: 1  # Run validation every epoch
-  val_check_interval: 0.1  # Validation check interval
+  val_check_interval: 0.05  # Validation check interval
   log_every_n_steps: 5  # Log metrics every 5 steps
   strategy: auto  # Distributed training strategy (auto-detect)
   sync_batchnorm: false  # Don't synchronize batch normalization across GPUs
-  precision: 16  # Use Fp16 precision training (32-bit)
+  precision: 16-mixed  # Use FP32 precision training (32-bit)
   enable_model_summary: true  # Display model summary at start
   num_sanity_val_steps: 2  # Run 2 validation steps before training
   profiler: null  # Profiler for performance analysis (disabled)
@@ -55,7 +55,7 @@ trainer:
   detect_anomaly: false  # Detect training anomalies (disabled)
   plugins: null  # No additional plugins
 model:
-  class_path: __main__.SimMIMtrainer  # Custom SimMIM trainer class
+  class_path: __main__.SimMIMtrainer  # Custom SimMIM trainer class with combined loss
   init_args:
     model_name: vitsimmim_base  # Model architecture name
     model_dict:
@@ -72,7 +72,6 @@ model:
       spatial_dims: 3  # Spatial dimensions (3 for 3D data)
       masking_ratio: 0.5  # Masking ratio for masked image modeling
       revise_keys: []  # Keys to revise when loading pretrained weights
-    # visualization_frequency: 100  # Frequency of reconstruction visualization during training (unit: batch)
     optimizer_config:
       class_path: torch.optim.AdamW  # AdamW optimizer with weight decay
       # Alternative optimizers you can use:
