@@ -21,7 +21,7 @@ nohup bash -c '{
     # ls -la
 
     MAIN_FILE=experiments/ssl/simmim_pretrain_main_comb_loss.py
-    CONFIG_FILE=configs/ssl/fomo60k/vitsimmim_base_p32_full_shallow_comb_loss.yaml
+    CONFIG_FILE=configs/ssl/fomo60k/vitsimmim_base_p16_full_shallow_comb_loss.yaml
 
     python3 $MAIN_FILE fit --config $CONFIG_FILE
 

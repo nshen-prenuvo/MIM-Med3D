@@ -213,13 +213,19 @@ class SimMIMtrainer(pl.LightningModule):
             current_lr = self.optimizers().param_groups[0]['lr']
             print(f"Training Step {self.global_step}: LR = {current_lr:.8f}")
         
+        print(f"Batch: {batch_idx}")        
         image = batch["image"]
+        print("Input mean:", image.mean().item(), "std:", image.std().item())
+
         pred_pixel_values, patches, batch_range, masked_indices = self.model(image)
         batch_size = pred_pixel_values.shape[0]
+        print("Output mean:", pred_pixel_values.mean().item(), "std:", pred_pixel_values.std().item())
+
         loss = self.recon_loss(pred_pixel_values, patches[batch_range, masked_indices])
-
         self.log("train/l1_loss", loss, batch_size=batch_size, sync_dist=True)
-
+        
+        if torch.isnan(loss):
+            print("NaN loss detected!")
         return {"loss": loss}
 
     def validation_step(self, batch, batch_idx):

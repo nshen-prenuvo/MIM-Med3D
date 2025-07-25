@@ -1,17 +1,17 @@
-seed_everything: 2002  # Random seed for reproducibility across all random operations
+seed_everything: 1990  # Random seed for reproducibility across all random operations
 trainer:
   logger:
     class_path: lightning.pytorch.loggers.TensorBoardLogger  # TensorBoard logging for experiment tracking
     init_args:
       save_dir: /home/ubuntu/fomo25_challenge/pipelines/pretrain_mim_med3d/lightning/logs/  # Directory for log files
       name: fomo60k  # Experiment name
-      version: vitsimmim_base_p32_m0.3_full_shallow_3cycle  # Experiment version identifier
+      version: vitsimmim_base_p16_m0.5_full_shallow_0.5cycle_lr0.0001_seed1990_comb_loss  # Experiment version identifier
       default_hp_metric: false  # Disable default hyperparameter metric
   enable_checkpointing: true  # Enable automatic checkpointing during training
   callbacks:
       - class_path: lightning.pytorch.callbacks.ModelCheckpoint  # Model checkpoint callback
         init_args:
-          dirpath: /home/ubuntu/fomo25_challenge/pipelines/pretrain_mim_med3d/lightning/checkpoints/vitsimmim_base_p32_m0.3_full_shallow_3cycle  # Checkpoint directory
+          dirpath: /home/ubuntu/fomo25_challenge/pipelines/pretrain_mim_med3d/lightning/checkpoints/vitsimmim_base_p16_m0.5_full_shallow_0.5cycle_lr0.0001_seed1990_comb_loss  # Checkpoint directory
           filename: epoch{epoch:02d}_step{global_step:04d}_val_loss{val/total_loss:.5f}  # Checkpoint filename pattern
           monitor: val/total_loss  # Metric to monitor for best model
           mode: min  # Minimize the monitored metric
@@ -21,8 +21,8 @@ trainer:
         init_args:
           logging_interval: step  # Log LR changes every step
       - class_path: lightning.pytorch.callbacks.TQDMProgressBar  # Progress bar callback
-  default_root_dir: /home/ubuntu/fomo25_challenge/pipelines/pretrain_mim_med3d/lightning/results/vitsimmim_base_p32_m0.3_full_shallow_3cycle  # Root directory for all outputs
-  gradient_clip_val: 1.0  # Conservative clipping value
+  default_root_dir: /home/ubuntu/fomo25_challenge/pipelines/pretrain_mim_med3d/lightning/results/vitsimmim_base_p16_m0.5_full_shallow_0.5cycle_lr0.0001_seed1990_comb_loss  # Root directory for all outputs
+  gradient_clip_val: 0.5  # Conservative clipping value
   gradient_clip_algorithm: norm  # Norm-based clipping is more stable
   num_nodes: 1  # Number of nodes for distributed training
   devices: 1  # Number of GPUs per node
@@ -45,14 +45,14 @@ trainer:
   log_every_n_steps: 5  # Log metrics every 5 steps
   strategy: auto  # Distributed training strategy (auto-detect)
   sync_batchnorm: false  # Don't synchronize batch normalization across GPUs
-  precision: 32  # Use FP32 precision training (32-bit)
+  precision: 16-mixed  # Use Fp16 precision training (32-bit)
   enable_model_summary: true  # Display model summary at start
   num_sanity_val_steps: 2  # Run 2 validation steps before training
   profiler: null  # Profiler for performance analysis (disabled)
   benchmark: true  # Enable cuDNN benchmarking for faster training
   deterministic: false  # Deterministic training (disabled for performance)
   reload_dataloaders_every_n_epochs: 0  # Don't reload dataloaders
-  detect_anomaly: false  # Detect training anomalies (disabled)
+  detect_anomaly: true  # Detect training anomalies (disabled)
   plugins: null  # No additional plugins
 model:
   class_path: __main__.SimMIMCombLossTrainer  # Custom SimMIM trainer class with combined loss
@@ -70,11 +70,11 @@ model:
       pos_embed: perceptron  # Position embedding type (learned positional embeddings)
       dropout_rate: 0.0  # Dropout rate for regularization
       spatial_dims: 3  # Spatial dimensions (3 for 3D data)
-      masking_ratio: 0.3  # Masking ratio for masked image modeling
+      masking_ratio: 0.5  # Masking ratio for masked image modeling
       revise_keys: []  # Keys to revise when loading pretrained weights
-    visualization_frequency: 100  # Frequency of reconstruction visualization during training (unit: batch)
-    l1_weight: 0.95  # Weight for L1 loss component in combined loss (increased for stability)
-    ssim_weight: 0.05  # Weight for SSIM loss component in combined loss (reduced to prevent NaN)
+    # visualization_frequency: 100  # Frequency of reconstruction visualization during training (unit: batch)
+    l1_weight: 0.9  # Weight for L1 loss component in combined loss (increased for stability)
+    ssim_weight: 0.1  # Weight for SSIM loss component in combined loss (reduced to prevent NaN)
     optimizer_config:
       class_path: torch.optim.AdamW  # AdamW optimizer with weight decay
       # Alternative optimizers you can use:
@@ -97,9 +97,9 @@ model:
       # class_path: torch.optim.lr_scheduler.ReduceLROnPlateau
       # class_path: optimizers.lr_scheduler.LinearWarmupCosineAnnealingLR
       init_args:
-        warmup_steps: 926  # Increased warmup steps (doubled from 926 for more gradual warmup)
+        warmup_steps: 900  
         t_total: 18520
-        cycles: 3
+        cycles: 0.5
         # Additional scheduler-specific parameters:
         # T_0: 3  # for CosineAnnealingWarmRestarts
         # T_mult: 1   # for CosineAnnealingWarmRestarts
@@ -114,8 +114,8 @@ data:
     val_json_path: /home/ubuntu/fomo25_challenge/data/metadata/preprocessed/fomo-60k/val_file_list.json  # Validation data file list path
     cache_dir: /home/ubuntu/fomo25_challenge/data/cache/  # Directory for caching data
     batch_size: 32   # Training batch size
-    val_batch_size: 24  # Validation batch size
-    num_workers: 4  # Number of data loading workers
+    val_batch_size: 32 # Validation batch size
+    num_workers: 6  # Number of data loading workers
     cache_num: 200  # Number of samples to cache in memory
     cache_rate: 1.0  # Fraction of dataset to cache (1.0 = cache all)
     spatial_size: [96, 96, 16]  # Spatial size for random cropping [depth, height, width]

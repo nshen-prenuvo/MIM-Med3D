@@ -26,5 +26,5 @@ nohup bash -c '{
     python3 $MAIN_FILE fit --config $CONFIG_FILE
 
     conda deactivate
-}' > logs/train.log 2>&1 &
+}' > logs/train_fomo60k_full.log 2>&1 &
 # > logs/train_$(date +%Y%m%d_%H%M%S).log 2>&1 &

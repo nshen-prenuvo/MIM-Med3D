@@ -27,7 +27,8 @@ class ViTSimMIM(nn.Module):
         dropout_rate: float = 0.0,
         spatial_dims: int = 3,
         masking_ratio: float = 0.5,
-        revise_keys=[("model.", "")],
+        revise_keys=[("^model\\.", "")],
+        # revise_keys=[("model.", "")],
         **kwargs,
     ):
         super().__init__()

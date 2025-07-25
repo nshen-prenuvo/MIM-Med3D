@@ -42,6 +42,12 @@ def load_npy(path):
     array = np.load(path)
     return array.astype(np.float32)
 
+def fill_nan_with_zero(array):
+    """Fill NaN values with 0 in the array"""
+    if np.isnan(array).any():
+        array = np.nan_to_num(array, nan=0.0)
+    return array
+
 
 class changToImage(MapTransform):
     def __call__(self, data):
@@ -91,6 +97,7 @@ class Fomo60kDataset(pl.LightningDataModule):
 
         self.common_transform_list = [
             Lambdad(keys="image", func=load_npy),
+            Lambdad(keys="image", func=fill_nan_with_zero),  # fill NaN values with 0
             EnsureChannelFirstd(keys="image", channel_dim="no_channel"),  # adds channel dim
             ToTensord(keys="image")  # converts to torch.Tensor
         ]
