@@ -5,13 +5,13 @@ trainer:
     init_args:
       save_dir: /home/ubuntu/fomo25_challenge/pipelines/pretrain_mim_med3d/lightning/logs/  # Directory for log files
       name: fomo60k  # Experiment name
-      version: vitsimmim_base_p16_m0.5_full_shallow_0.5cycle_lr0.0001_seed1990_continued  # Experiment version identifier
+      version: vitsimmim_base_p16_m0.5_full_shallow_0.5cycle_lr0.00001_seed1990_continued3  # Experiment version identifier
       default_hp_metric: false  # Disable default hyperparameter metric
   enable_checkpointing: true  # Enable automatic checkpointing during training
   callbacks:
       - class_path: lightning.pytorch.callbacks.ModelCheckpoint  # Model checkpoint callback
         init_args:
-          dirpath: /home/ubuntu/fomo25_challenge/pipelines/pretrain_mim_med3d/lightning/checkpoints/vitsimmim_base_p16_m0.5_full_shallow_0.5cycle_lr0.0001_seed1990_continued  # Checkpoint directory
+          dirpath: /home/ubuntu/fomo25_challenge/pipelines/pretrain_mim_med3d/lightning/checkpoints/vitsimmim_base_p16_m0.5_full_shallow_0.5cycle_lr0.00001_seed1990_continued3  # Checkpoint directory
           filename: epoch{epoch:02d}_step{global_step:04d}_val_loss{val/l1_loss:.5f}  # Checkpoint filename pattern
           monitor: val/l1_loss  # Metric to monitor for best model
           mode: min  # Minimize the monitored metric
@@ -21,7 +21,7 @@ trainer:
         init_args:
           logging_interval: step  # Log LR changes every step
       - class_path: lightning.pytorch.callbacks.TQDMProgressBar  # Progress bar callback
-  default_root_dir: /home/ubuntu/fomo25_challenge/pipelines/pretrain_mim_med3d/lightning/results/vitsimmim_base_p16_m0.5_full_shallow_5cycle_lr0.0001_seed1990_continued  # Root directory for all outputs
+  default_root_dir: /home/ubuntu/fomo25_challenge/pipelines/pretrain_mim_med3d/lightning/results/vitsimmim_base_p16_m0.5_full_shallow_0.5cycle_lr0.00001_seed1990_continued3  # Root directory for all outputs
   gradient_clip_val: 0.5  # Conservative clipping value
   gradient_clip_algorithm: norm  # Norm-based clipping is more stable
   num_nodes: 1  # Number of nodes for distributed training
@@ -31,7 +31,7 @@ trainer:
   overfit_batches: 0.0  # Overfitting detection (disabled)
   fast_dev_run: false  # Fast development run (disabled)
   accumulate_grad_batches: 1  # Gradient accumulation steps
-  max_epochs: 10  # Maximum number of training epochs
+  max_epochs: 20  # Maximum number of training epochs
   min_epochs: null  # Minimum number of training epochs (no limit)
   max_steps: -1  # Maximum number of training steps (no limit)
   min_steps: null  # Minimum number of training steps (no limit)
@@ -59,7 +59,9 @@ model:
   init_args:
     model_name: vitsimmim_base  # Model architecture name
     model_dict:
-      pretrained: /home/ubuntu/fomo25_challenge/pipelines/pretrain_mim_med3d/lightning/checkpoints/vitsimmim_base_p16_m0.5_full_shallow_0.5cycle/epoch02_step0000_val_loss0.10902.ckpt  
+      pretrained: /home/ubuntu/fomo25_challenge/pipelines/pretrain_mim_med3d/lightning/checkpoints/vitsimmim_base_p16_m0.5_full_shallow_0.5cycle_lr0.00001_seed1990_continued2/epoch15_step0000_val_loss0.07466.ckpt
+      # pretrained: /home/ubuntu/fomo25_challenge/pipelines/pretrain_mim_med3d/lightning/checkpoints/vitsimmim_base_p16_m0.5_full_shallow_0.5cycle_lr0.00001_seed1990_continued/epoch07_step0000_val_loss0.08260.ckpt
+      # pretrained: /home/ubuntu/fomo25_challenge/pipelines/pretrain_mim_med3d/lightning/checkpoints/vitsimmim_base_p16_m0.5_full_shallow_0.5cycle/epoch02_step0000_val_loss0.10902.ckpt  
       # pretrained: null  # Path to pretrained weights (null = train from scratch)
       in_channels: 1  # Number of input channels (1 for grayscale medical images)
       img_size: [96, 96, 16]  # Input image dimensions [depth, height, width]
@@ -81,7 +83,7 @@ model:
       # class_path: torch.optim.SGD
       # class_path: torch.optim.RMSprop
       init_args:
-        lr: 0.0001  # Learning rate 
+        lr: 0.00001  # Learning rate 
         weight_decay: 0.01  # Weight decay for regularization
         # Additional optimizer-specific parameters:
         # betas: [0.9, 0.999]  # For Adam/AdamW
@@ -96,9 +98,10 @@ model:
       # class_path: torch.optim.lr_scheduler.ReduceLROnPlateau
       # class_path: optimizers.lr_scheduler.LinearWarmupCosineAnnealingLR
       init_args:
-        warmup_steps: 900  
-        t_total: 18520
-        cycles: 5
+        warmup_steps: 0
+        t_total: 37040 # 20 epochs; batch size = 32
+        # t_total: 18520 # 10 epochs; batch size = 32
+        cycles: 0.5
         # Additional scheduler-specific parameters:
         # T_0: 3  # for CosineAnnealingWarmRestarts
         # T_mult: 1   # for CosineAnnealingWarmRestarts

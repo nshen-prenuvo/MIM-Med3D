@@ -1,6 +1,10 @@
+import torch
+import torch.nn as nn
 from typing import Sequence, Tuple, Union
 
-import torch.nn as nn
+# Optimize for Tensor Cores on CUDA devices
+if torch.cuda.is_available():
+    torch.set_float32_matmul_precision('medium')
 
 from monai.networks.blocks.dynunet_block import UnetOutBlock
 from monai.networks.blocks.unetr_block import (
@@ -10,7 +14,33 @@ from monai.networks.blocks.unetr_block import (
 )
 from monai.networks.nets.vit import ViT
 from monai.utils import ensure_tuple_rep
-from mmcv.runner import load_checkpoint
+
+from mmengine.runner import load_checkpoint
+
+# # Modern checkpoint loading approach - try multiple sources
+# try:
+#     from mmcv.runner import load_checkpoint
+# except ImportError:
+#     try:
+#         from mmengine.runner import load_checkpoint
+#     except ImportError:
+#         # Fallback to torch.load if mmcv/mmengine not available
+#         def load_checkpoint(model, filename, strict=False, revise_keys=None, **kwargs):
+#             checkpoint = torch.load(filename, map_location='cpu')
+#             if 'state_dict' in checkpoint:
+#                 state_dict = checkpoint['state_dict']
+#             else:
+#                 state_dict = checkpoint
+            
+#             # Handle revise_keys if provided
+#             if revise_keys:
+#                 for old_key, new_key in revise_keys:
+#                     if old_key in state_dict:
+#                         state_dict[new_key] = state_dict.pop(old_key)
+            
+#             model.load_state_dict(state_dict, strict=strict)
+#             print(f"Loaded checkpoint from {filename}")
+#             return checkpoint
 
 
 class UNETR(nn.Module):
@@ -36,7 +66,8 @@ class UNETR(nn.Module):
         res_block: bool = True,
         dropout_rate: float = 0.0,
         spatial_dims: int = 3,
-        revise_keys=[],
+        # revise_keys=[],
+        revise_keys=[("^model\\.encoder\\.", "^vit\\.")],
     ) -> None:
         """
         Args:
@@ -204,21 +235,27 @@ class UNETR(nn.Module):
         Args:
             pretrained (str, optional): Path to pre-trained weights.
                 Defaults to None.
+            revise_keys (list, optional): List of (old_key, new_key) tuples for key mapping.
+                Defaults to [].
         """
 
         if pretrained:
             self.pretrained = pretrained
         if isinstance(self.pretrained, str):
-            print("load checkpoints from {}".format(self.pretrained))
-            load_checkpoint(
-                self,
-                filename=self.pretrained,
-                # map_location="cpu",
-                strict=False,
-                revise_keys=revise_keys,
-            )
+            print(f"Loading checkpoints from {self.pretrained}")
+            try:
+                load_checkpoint(
+                    self,
+                    filename=self.pretrained,
+                    strict=False,
+                    revise_keys=revise_keys,
+                )
+                print(f"Successfully loaded checkpoint from {self.pretrained}")
+            except Exception as e:
+                print(f"Warning: Failed to load checkpoint from {self.pretrained}: {e}")
+                print("Continuing with random initialization...")
         elif self.pretrained is None:
-            pass
+            print("No pretrained weights provided, using random initialization")
         else:
             raise TypeError("pretrained must be a str or None")
 
@@ -238,11 +275,55 @@ class UNETR(nn.Module):
         out = self.decoder2(dec1, enc1)
         return self.out(out)
 
+    def monitor_parameters(self, log_every_n_steps=100):
+        """Monitor model parameters and gradients for debugging purposes.
+        
+        Args:
+            log_every_n_steps (int): How often to log parameter statistics.
+        """
+        if not hasattr(self, '_step_count'):
+            self._step_count = 0
+        
+        self._step_count += 1
+        
+        if self._step_count % log_every_n_steps == 0:
+            total_params = sum(p.numel() for p in self.parameters())
+            trainable_params = sum(p.numel() for p in self.parameters() if p.requires_grad)
+            
+            print(f"Step {self._step_count}: Model Statistics")
+            print(f"  Total parameters: {total_params:,}")
+            print(f"  Trainable parameters: {trainable_params:,}")
+            
+            # Check for NaN or Inf values in parameters
+            has_nan = any(torch.isnan(p).any() for p in self.parameters())
+            has_inf = any(torch.isinf(p).any() for p in self.parameters())
+            
+            if has_nan:
+                print("  WARNING: NaN values detected in parameters!")
+            if has_inf:
+                print("  WARNING: Inf values detected in parameters!")
+            
+            # Check gradients if they exist
+            if any(p.grad is not None for p in self.parameters()):
+                grad_norm = torch.nn.utils.clip_grad_norm_(self.parameters(), max_norm=float('inf'))
+                print(f"  Gradient norm: {grad_norm:.6f}")
+            
+            print("-" * 50)
+
 
 if __name__ == "__main__":
     import torch
 
-    x = torch.randn(1, 1, 96, 96, 96)
+    # Set device
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print(f"Using device: {device}")
+
+    # Test input
+    x = torch.randn(1, 1, 96, 96, 96).to(device)
+    print(f"Input shape: {x.shape}")
+    print(f"Input mean: {x.mean().item():.6f}, std: {x.std().item():.6f}")
+
+    # Create model
     model = UNETR(
         pretrained=None,
         in_channels=1,
@@ -260,7 +341,27 @@ if __name__ == "__main__":
         dropout_rate=0.0,
         spatial_dims=3,
         revise_keys=[],
-    )
+    ).to(device)
 
-    y = model(x)
-    print(y.shape)
+    # Monitor model parameters
+    model.monitor_parameters(log_every_n_steps=1)
+
+    # Test forward pass
+    try:
+        with torch.no_grad():
+            y = model(x)
+        print(f"Output shape: {y.shape}")
+        print(f"Output mean: {y.mean().item():.6f}, std: {y.std().item():.6f}")
+        
+        # Check for NaN or Inf in output
+        if torch.isnan(y).any():
+            print("WARNING: NaN values in output!")
+        if torch.isinf(y).any():
+            print("WARNING: Inf values in output!")
+            
+        print("Model test completed successfully!")
+        
+    except Exception as e:
+        print(f"Error during forward pass: {e}")
+        import traceback
+        traceback.print_exc()

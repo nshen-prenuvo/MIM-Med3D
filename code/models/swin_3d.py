@@ -12,10 +12,10 @@ from timm.models.layers import DropPath, trunc_normal_
 
 # from mmcv.runner import load_checkpoint
 from mmengine.runner import load_checkpoint
-from mmcv.utils import get_logger
+from mmengine.logging import MMLogger
 
 def get_root_logger(log_file=None, log_level=logging.INFO):
-    """Use ``get_logger`` method in mmcv to get the root logger.
+    """Use ``MMLogger.get_instance`` method in mmengine to get the root logger.
     The logger will be initialized if it has not been initialized. By default a
     StreamHandler will be added. If ``log_file`` is specified, a FileHandler
     will also be added. The name of the root logger is the top-level package
@@ -29,7 +29,7 @@ def get_root_logger(log_file=None, log_level=logging.INFO):
     Returns:
         :obj:`logging.Logger`: The root logger.
     """
-    return get_logger(__name__.split(".")[0], log_file, log_level)
+    return MMLogger.get_instance(__name__.split(".")[0], log_file=log_file, log_level=log_level)
 
 
 class Mlp(nn.Module):

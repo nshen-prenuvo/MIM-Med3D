@@ -4,7 +4,7 @@ import torch
 
 from .swin_3d import SwinTransformer3D
 from .upernet_3d import UperNet3D
-from mmcv.runner import load_checkpoint
+from mmengine.runner import load_checkpoint
 
 
 class UperNetSwin(torch.nn.Module):
